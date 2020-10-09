@@ -1,1 +1,1 @@
-include ':sample', ':pinview'
+include ':pinview'
