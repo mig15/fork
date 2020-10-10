@@ -86,6 +86,7 @@ public class PinView extends AppCompatEditText {
     private int mPinItemHeight;
     private int mPinItemRadius;
     private int mPinItemSpacing;
+    private int separatorSpacing;
 
     private final Paint mPaint;
     private final TextPaint mAnimatorTextPaint = new TextPaint();
@@ -159,6 +160,8 @@ public class PinView extends AppCompatEditText {
 
         mItemBackground = a.getDrawable(R.styleable.PinView_android_itemBackground);
         mHideLineWhenFilled = a.getBoolean(R.styleable.PinView_hideLineWhenFilled, false);
+
+        separatorSpacing = mPinItemSpacing * 4;
 
         a.recycle();
 
@@ -273,7 +276,14 @@ public class PinView extends AppCompatEditText {
             // Parent has told us how big to be. So be it.
             width = widthSize;
         } else {
-            int boxesWidth = (mPinItemCount - 1) * mPinItemSpacing + mPinItemCount * mPinItemWidth;
+            int boxesWidth;
+
+            if (mPinItemCount == 6) {
+                boxesWidth = ((mPinItemCount - 2) * mPinItemSpacing + separatorSpacing) + mPinItemCount * mPinItemWidth;
+            } else {
+                boxesWidth = (mPinItemCount - 1) * mPinItemSpacing + mPinItemCount * mPinItemWidth;
+            }
+
             width = boxesWidth + ViewCompat.getPaddingEnd(this) + ViewCompat.getPaddingStart(this);
             if (mPinItemSpacing == 0) {
                 width -= (mPinItemCount - 1) * mLineWidth;
@@ -572,7 +582,18 @@ public class PinView extends AppCompatEditText {
 
     private void updateItemRectF(int i) {
         float halfLineWidth = ((float) mLineWidth) / 2;
-        float left = getScrollX() + ViewCompat.getPaddingStart(this) + i * (mPinItemSpacing + mPinItemWidth) + halfLineWidth;
+
+        float left;
+        if (mPinItemCount == 6 && i == 3) {
+            left = getScrollX() + ViewCompat.getPaddingStart(this) + i * mPinItemWidth + ((i - 1) * mPinItemSpacing + separatorSpacing) + halfLineWidth;
+        } else if (mPinItemCount == 6 && i == 4) {
+            left = getScrollX() + ViewCompat.getPaddingStart(this) + i * mPinItemWidth + ((i - 1) * mPinItemSpacing + separatorSpacing) + halfLineWidth;
+        } else if (mPinItemCount == 6 && i == 5) {
+            left = getScrollX() + ViewCompat.getPaddingStart(this) + i * mPinItemWidth + ((i - 1) * mPinItemSpacing + separatorSpacing) + halfLineWidth;
+        } else {
+            left = getScrollX() + ViewCompat.getPaddingStart(this) + i * (mPinItemSpacing + mPinItemWidth) + halfLineWidth;
+        }
+
         if (mPinItemSpacing == 0 && i > 0) {
             left = left - (mLineWidth) * i;
         }
@@ -581,6 +602,10 @@ public class PinView extends AppCompatEditText {
         float bottom = top + mPinItemHeight - mLineWidth;
 
         mItemBorderRect.set(left, top, right, bottom);
+    }
+
+    private int getSpacingSum(int count) {
+        return mPinItemSpacing * count;
     }
 
     private void drawText(Canvas canvas, int i) {
