@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.chaos.view.PinView
+        android:id="@+id/pinView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:textSize="17sp"
+        android:inputType="number"
+        android:digits="1234567890"
+        app:itemHeight="40dp"
+        app:itemWidth="40dp"
+        app:itemCount="6"
+        app:lineWidth="2dp"
+        app:cursorColor="@android:color/black"
+        app:cursorWidth="1dp"
+        app:lineColor="@android:color/black"
+        app:hideLineWhenFilled="true"
+        app:viewType="rectangle"
+        style="@style/PinWidget.PinView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
